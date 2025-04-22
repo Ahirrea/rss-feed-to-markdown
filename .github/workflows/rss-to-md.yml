@@ -2,7 +2,7 @@ name: RSS to Markdown
 
 on:
   schedule:
-    - cron: '0 8 * * 1'  # Jeden Montag um 08:00 Uhr
+    - cron: '0 8 * * 1'  # Jeden Montag um 08:00 Uhr UTC
   workflow_dispatch:
 
 jobs:
@@ -10,16 +10,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: Set current date as variable
+        run: echo "TODAY=$(date +%Y-%m-%d)" >> $GITHUB_ENV
+
       - name: Run RSS Feed to Markdown Action
         uses: keiranlovett/rss-feed-to-markdown@main
         with:
           feed_urls_file: 'feed_urls.json'
           template_file: 'template.md'
-          output_dir: 'rss_markdown'
+          output_dir: "rss_markdown/${{ env.TODAY }}"
+
       - name: Commit & Push Markdown files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add rss_markdown
-          git commit -m "Update RSS markdown files" || echo "Nothing to commit"
+          git commit -m "RSS-Update vom ${{ env.TODAY }}" || echo "Nothing to commit"
           git push
