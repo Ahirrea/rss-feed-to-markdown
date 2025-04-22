@@ -16,3 +16,10 @@ jobs:
           feed_urls_file: 'feed_urls.json'
           template_file: 'template.md'
           output_dir: 'rss_markdown'
+      - name: Commit & Push Markdown files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add rss_markdown
+          git commit -m "Update RSS markdown files" || echo "Nothing to commit"
+          git push
