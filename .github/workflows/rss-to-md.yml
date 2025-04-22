@@ -1,0 +1,18 @@
+name: RSS to Markdown
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'  # Jeden Montag um 08:00 Uhr
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run RSS Feed to Markdown Action
+        uses: keiranlovett/rss-feed-to-markdown@main
+        with:
+          feed_urls_file: 'feed_urls.json'
+          template_file: 'template.md'
+          output_dir: 'rss_markdown'
