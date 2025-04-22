@@ -1,5 +1,7 @@
 [
   "https://devblogs.microsoft.com/dotnet/feed/",
   "https://blog.angular.io/feed",
-  "https://azure.microsoft.com/en-us/blog/feed/"
+  "https://azure.microsoft.com/en-us/blog/feed/",
+  "https://pwop.com/feed.aspx?show=dotnetrocks",
+  "https://www.c-sharpcorner.com/rss/latestcontentall.aspx"
 ]
