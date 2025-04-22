@@ -20,6 +20,21 @@ jobs:
           feed_urls_file: 'feed_urls.json'
           template_file: 'template.md'
           output_dir: "rss_markdown/${{ env.TODAY }}"
+      - name: Generate index.md for rss_markdown
+        run: |
+          INDEX_FILE="rss_markdown/index.md"
+          echo "# Inhaltsverzeichnis der RSS-Zusammenfassungen" > $INDEX_FILE
+          echo "" >> $INDEX_FILE
+
+          for dir in $(ls -1 rss_markdown | grep -E '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' | sort -r); do
+            echo "## [$dir](./$dir)" >> $INDEX_FILE
+            for file in rss_markdown/$dir/*.md; do
+              filename=$(basename "$file")
+              title=$(grep -m1 '^# ' "$file" | sed 's/# //')
+              echo "- [${title}]($dir/$filename)" >> $INDEX_FILE
+            done
+            echo "" >> $INDEX_FILE
+          done
 
       - name: Commit & Push Markdown files
         run: |
